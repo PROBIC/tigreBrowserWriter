@@ -1,9 +1,9 @@
-initializeDb <- function(dbPath, datasetName, datasetSpecies='', datasetSource='', datasetPlatform='', datasetSaveLocation='', datasetFigureFile='') {
+initializeDb <- function(dbPath, datasetName, datasetSpecies='', datasetSource='', datasetPlatform='', datasetDescription='', datasetSaveLocation='', datasetFigureFilename='') {
     db <- .openConnection(dbPath)
-    createTables(db)
+    .createTables(db)
     datasetId <- .addAndGetDatasetId(db, datasetName, datasetSpecies, datasetSource, datasetPlatform, datasetDescription, datasetSaveLocation, datasetFigureFilename)
-    return list(db=db, datasetId=datasetId, experimentIds=list(),
-                regulatorIds=list())
+    return (list(db=db, datasetId=datasetId, experimentIds=list(),
+                 regulatorIds=list()))
 }
 
 insertAliases <- function(db, aliasType, aliases, aliasSource='', aliasDescription='') {
@@ -11,26 +11,27 @@ insertAliases <- function(db, aliasType, aliases, aliasSource='', aliasDescripti
 
     gene_ids <- .addAndGetProbeGeneIds(db$db, names(aliases))
 
-    dbBeginTransaction(db$db)
+    dbBegin(db$db)
     for (i in seq_along(gene_ids[[1]])) {
         probe <- gene_ids[i, 1]
         gene_id <- gene_ids[i, 2]
         .addGeneAliases(db$db, alias_id, gene_id, list(probe=aliases[probe]))
     }
     dbCommit(db$db)
+    return (db)
 }
 
 insertResults <- function(db, experimentName, regulatorName, figurePath, loglikelihoods, baselineloglikelihoods=NA, experimentDesc='', loopVariable=2, modelTranslation=FALSE, numberOfParameters=NA, parameterNames=NA, experimentProducer='', experimentTimestamp='', parameters=NA) {
     regId <- .addAndGetRegulatorId(db$db, regulatorName, db$datasetId)
     experimentId <- .addAndGetExperimentId(db$db, experimentName, experimentDesc, db$datasetId, regulatorId=regId, loopVariable=loopVariable, modelTranslation=modelTranslation, numberOfParameters=numberOfParameters, parameterNames=parameterNames, producer=experimentProducer, timestamp=experimentTimestamp)
-    .addResults(db$db, experimentId, loglikelihoods, baseloglikelihoods, parameters)
-    db$experimentIds$experimentName <- experimentId
+    .addResults(db$db, experimentId, loglikelihoods, baselineloglikelihoods, parameters)
+    db$experimentIds[[experimentName]] <- experimentId
     return (db)
 }
 
 insertFigures <- function(db, experimentName, regulatorName, filename, name='', description='', priority=0) {
-    tryCatch(experimentId <- db$experimentIds$experimentName,
-             stop("Insert results for experiment before inserting figures."))
+    tryCatch(experimentId <- db$experimentIds[[experimentName]],
+             error = function(e) stop("Insert results for experiment before inserting figures."))
     .addFigures(db$db, experimentId, filename=filename, name=name, description=description, priority=priority, figureData=NULL)
     return (db)
 }
@@ -48,11 +49,12 @@ insertSupplementaryData <- function(db, name, suppData, regulatorName=NA, source
     } else {
         type = 2
     }
-    .addAndGetSupplementaryDataId(db$db, name, regulatorId, type, source, platform, description)
+    suppDatasetId <- .addAndGetSupplementaryDataId(db$db, name, regulatorId, type, source, platform, description)
     .addSupplementaryData(db$db, suppDatasetId, suppData)    
     return (db)
 }
 
 insertZScores <- function(db, zscores) {
-    .insertZscores(db$db, db$datasetId, zscores)
+    .addZscores(db$db, db$datasetId, zscores)
+    return (db)
 }

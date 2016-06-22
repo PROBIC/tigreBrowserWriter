@@ -100,7 +100,7 @@ CONSTRAINT supplementary_dataset_annotation_r_f FOREIGN KEY (regulator_id) REFER
   data <- as.data.frame(probeNames)
   colnames(data) <- "probe"
 
-  dbBeginTransaction(db)
+  dbBegin(db)
   dbGetPreparedQuery(db, insert_query, data)
   dbCommit(db)
 
@@ -180,7 +180,7 @@ CONSTRAINT supplementary_dataset_annotation_r_f FOREIGN KEY (regulator_id) REFER
 
   query <- paste("SELECT s.supp_dataset_id",
                  "FROM supplementary_dataset_annotation AS s",
-                 "WHERE s.name = @name AND s.regulator_id = @regulator_id")
+                 "WHERE s.supp_dataset_name = @name AND s.regulator_id = @regulator_id")
   supp_id <- dbGetPreparedQuery(db, query, data.frame(name = name, regulator_id = regulatorId))
   return(supp_id[1,1])
 }
@@ -252,7 +252,11 @@ CONSTRAINT supplementary_dataset_annotation_r_f FOREIGN KEY (regulator_id) REFER
                         "VALUES (@gene_id, @experiment_id, @log_likelihood, @baseline_log_likelihood, @params)")
   probes <- names(logLikelihoods)
   probe_gene_ids <- .addAndGetProbeGeneIds(db, probes)
-  data <- as.data.frame(cbind(probe_gene_ids, experimentId, logLikelihoods, baselineLogLikelihoods, I(lapply(params, function(x) serialize(x, NULL, ascii = FALSE)))))
+  if (is.na(params)) {
+      data <- as.data.frame(cbind(probe_gene_ids, experimentId, logLikelihoods, baselineLogLikelihoods, NA))
+  } else {
+      data <- as.data.frame(cbind(probe_gene_ids, experimentId, logLikelihoods, baselineLogLikelihoods, I(lapply(params, function(x) serialize(x, NULL, ascii = FALSE)))))
+  }
   data <- data[2:6] # remove probe_name column
   names(data) <- cbind("gene_id", "experiment_id", "log_likelihood", "baseline_log_likelihood", "params")
   dbGetPreparedQuery(db, insert_query, data)
