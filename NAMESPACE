@@ -1,15 +1,11 @@
-importClassesFrom(methods, character, list, matrix, numeric)
+importClassesFrom(methods, list)
 
 importMethodsFrom(DBI, dbCommit, dbConnect, dbDisconnect, dbDriver,
                   dbGetQuery, dbListTables)
 
-importMethodsFrom(methods, initialize, show)
-
-importMethodsFrom(RSQLite, dbBeginTransaction, dbGetPreparedQuery)
+importMethodsFrom(RSQLite, dbBegin, dbGetPreparedQuery)
 
 importFrom(RSQLite, SQLite)
-
-importFrom(utils, sessionInfo, write.table)
 
 ##export everything that does not start with a . or an _
 exportPattern("^[^\\._]")
