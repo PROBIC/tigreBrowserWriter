@@ -5,10 +5,10 @@ aliases = c("aliasA", "aliasB", "aliasC")
 names(aliases) = c("A", "B", "C")
 db = insertAliases(db, "testalias", aliases)
 
-logl = c(-4, -2, 0)
+logl = c(-4.0, -2.0, 0.0)
 names(logl) = names(aliases)
 
-baselogl = c(0, -1, 0)
+baselogl = c(1.0, -1.0, 4.0)
 names(baselogl) = names(aliases)
 
 db = insertResults(db, "testexperiment", "testregulator", "", logl, baselineloglikelihoods=baselogl)
@@ -24,3 +24,4 @@ db = insertSupplementaryData(db, "supptest", zscores)
 boolsupp = c(TRUE, TRUE, FALSE)
 names(boolsupp) = names(aliases)
 db = insertSupplementaryData(db, "supptest_bool", boolsupp)
+db = closeDb(db)

@@ -178,10 +178,17 @@ CONSTRAINT supplementary_dataset_annotation_r_f FOREIGN KEY (regulator_id) REFER
                         "VALUES (null, @type, @name, @regulator_id, @source, @platform, @description)")
   dbGetPreparedQuery(db, insert_query, data.frame(type = type, name = name, regulator_id = regulatorId, source = source, platform = platform, description = description))
 
-  query <- paste("SELECT s.supp_dataset_id",
-                 "FROM supplementary_dataset_annotation AS s",
-                 "WHERE s.supp_dataset_name = @name AND s.regulator_id = @regulator_id")
-  supp_id <- dbGetPreparedQuery(db, query, data.frame(name = name, regulator_id = regulatorId))
+  if (is.na(regulatorId)) {
+      query <- paste("SELECT s.supp_dataset_id",
+                     "FROM supplementary_dataset_annotation AS s",
+                     "WHERE s.supp_dataset_name = @name")
+      supp_id <- dbGetPreparedQuery(db, query, data.frame(name = name))
+  } else {
+      query <- paste("SELECT s.supp_dataset_id",
+                     "FROM supplementary_dataset_annotation AS s",
+                     "WHERE s.supp_dataset_name = @name AND s.regulator_id = @regulator_id")
+      supp_id <- dbGetPreparedQuery(db, query, data.frame(name = name, regulator_id = regulatorId))
+  }
   return(supp_id[1,1])
 }
 
