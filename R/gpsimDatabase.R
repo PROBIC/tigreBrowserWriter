@@ -19,12 +19,16 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#' @importFrom RSQLite SQLite
+#' @importMethodsFrom DBI dbConnect
 .openConnection <- function(dbPath) {
   drv <- SQLite()
   db <- dbConnect(drv, dbPath)
   return(db)
 }
 
+#' @importMethodsFrom RSQLite dbBegin dbGetPreparedQuery
+#' @importMethodsFrom DBI dbCommit dbConnect dbDisconnect dbGetQuery dbListTables
 .createTables <- function(db) {
   tables <- cbind('CREATE TABLE genes (gene_id INTEGER PRIMARY KEY, probe_name VARCHAR,
 CONSTRAINT genes_u UNIQUE (probe_name) ON CONFLICT IGNORE)',

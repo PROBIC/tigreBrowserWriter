@@ -1,12 +1,16 @@
 Package: tigrebrowserWriter
 Version: 0.1.0
-Date: 2016-06-22
-Title: tigreBrowser database writer
+Date: 2016-08-03
+Title: tigreBrowser Database Writer
 Author: Antti Honkela, Miika-Petteri Matikainen
 Maintainer: Antti Honkela <antti.honkela@helsinki.fi>
-Depends: R (>= 2.11.0)
-Imports: methods, DBI, RSQLite
+Depends:
+    R (>= 2.11.0)
+Imports:
+    DBI,
+    RSQLite
 Description: Write modelling results into a database for tigreBrowser.
 License: AGPL-3
 URL: https://github.com/PROBIC/tigrebrowserWriter
 BugReports: https://github.com/PROBIC/tigrebrowserWriter/issues
+RoxygenNote: 5.0.1
