@@ -15,10 +15,8 @@ closeDb(db, experimentSet = "")
 Finalise and close the database
 }
 \examples{
-\dontrun{
-  db <- initializeDb('path/to/database.sqlite', 'My Dataset')
+  db <- initializeDb("", "My Dataset")
   # ...
   closeDb(db)
-}
 }
 

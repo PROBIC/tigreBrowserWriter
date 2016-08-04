@@ -9,7 +9,7 @@ initializeDb(dbPath, datasetName, datasetSpecies = "", datasetSource = "",
   datasetFigureFilename = "")
 }
 \arguments{
-\item{dbPath}{Path to the database file to be created}
+\item{dbPath}{Path to the database file to be created. Empty string}
 
 \item{datasetName}{Name of the data set}
 
@@ -33,7 +33,13 @@ Create and initialize a database
 }
 \examples{
 \dontrun{
-  db <- initializeDb('path/to/database.sqlite', 'My Dataset')
+  # Create a real database to a file
+  db <- initializeDb("/path/to/the/database.sqlite", "My Dataset")
+  closeDb(db)
 }
+
+  # Create a temporary database to be deleted at the end
+  db <- initializeDb("", "My Dataset")
+  closeDb(db)
 }
 

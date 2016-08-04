@@ -20,7 +20,8 @@
 
 #' Create and initialize a database
 #'
-#' @param dbPath Path to the database file to be created
+#' @param dbPath Path to the database file to be created. Empty string
+#    creates a temporary database that will be deleted at the end.
 #' @param datasetName Name of the data set
 #' @param datasetSpecies Optional data set metadata: species
 #' @param datasetSource Optional data set metadata: source
@@ -31,8 +32,14 @@
 #' @return A database object db needed by other tigrebrowserWriter functions
 #' @examples
 #' \dontrun{
-#'   db <- initializeDb('path/to/database.sqlite', 'My Dataset')
+#'   # Create a real database to a file
+#'   db <- initializeDb("/path/to/the/database.sqlite", "My Dataset")
+#'   closeDb(db)
 #' }
+#'
+#'   # Create a temporary database to be deleted at the end
+#'   db <- initializeDb("", "My Dataset")
+#'   closeDb(db)
 #' @export
 initializeDb <- function(dbPath, datasetName, datasetSpecies='', datasetSource='', datasetPlatform='', datasetDescription='', datasetSaveLocation='', datasetFigureFilename='') {
     db <- .openConnection(dbPath)
@@ -51,12 +58,11 @@ initializeDb <- function(dbPath, datasetName, datasetSpecies='', datasetSource='
 #' @param aliasDescription Optional alias metadata: description
 #' @return An updated database object db
 #' @examples
-#' \dontrun{
-#'   db <- initializeDb('path/to/database.sqlite', 'My Dataset')
-#'   aliases = c("aliasA", "aliasB", "aliasC")
-#'   names(aliases) = c("A", "B", "C")
-#'   db = insertAliases(db, "testalias", aliases)
-#' }
+#'   db <- initializeDb("", "My Dataset")
+#'   aliases <- c("aliasA", "aliasB", "aliasC")
+#'   names(aliases) <- c("A", "B", "C")
+#'   db <- insertAliases(db, "testalias", aliases)
+#'   closeDb(db)
 #' @export
 insertAliases <- function(db, aliasType, aliases, aliasSource='', aliasDescription='') {
     alias_id <- .addAndGetAliasId(db$db, db$datasetId, aliasType, aliasSource, aliasDescription)
@@ -91,15 +97,14 @@ insertAliases <- function(db, aliasType, aliases, aliasSource='', aliasDescripti
 #' @param parameters Optional: A vector of parameter values for the model
 #' @return An updated database object db
 #' @examples
-#' \dontrun{
-#'   db <- initializeDb('path/to/database.sqlite', 'My Dataset')
-#'   logl = c(-4.0, -2.0, 0.0)
-#'   names(logl) = c("A", "B", "C")
-#'   baselogl = c(1.0, -1.0, 4.0)
-#'   names(baselogl) = names(logl)
-#'   db = insertResults(db, "testexperiment", "testregulator", "",
+#'   db <- initializeDb("", "My Dataset")
+#'   logl <- c(-4.0, -2.0, 0.0)
+#'   names(logl) <- c("A", "B", "C")
+#'   baselogl <- c(1.0, -1.0, 4.0)
+#'   names(baselogl) <- names(logl)
+#'   db <- insertResults(db, "testexperiment", "testregulator", "",
 #'                      logl, baselineloglikelihoods=baselogl)
-#' }
+#'   closeDb(db)
 #' @export
 insertResults <- function(db, experimentName, regulatorName, figurePath, loglikelihoods, baselineloglikelihoods=NA, experimentDesc='', loopVariable=2, modelTranslation=FALSE, numberOfParameters=NA, parameterNames=NA, experimentProducer='', experimentTimestamp='', parameters=NA) {
     if (experimentDesc == '')
@@ -124,11 +129,16 @@ insertResults <- function(db, experimentName, regulatorName, figurePath, loglike
 #' @param priority Integer priority used for sorting figures (default: 0)
 #' @return An updated database object db
 #' @examples
-#' \dontrun{
-#'   db = initializeDb('path/to/database.sqlite', 'My Dataset')
-#'   db = insertFigures(db, "testexperiment", "testregulator",
-#'                      "http://foo.invalid/path/${probe_name}_fit.png")
-#' }
+#'   db <- initializeDb("", "My Dataset")
+#'   logl <- c(-4.0, -2.0, 0.0)
+#'   names(logl) <- c("A", "B", "C")
+#'   baselogl <- c(1.0, -1.0, 4.0)
+#'   names(baselogl) <- names(logl)
+#'   db <- insertResults(db, "testexperiment", "testregulator", "",
+#'                      logl, baselineloglikelihoods=baselogl)
+#'   db <- insertFigures(db, "testexperiment", "testregulator",
+#'                       "http://foo.invalid/path/${probe_name}_fit.png")
+#'   closeDb(db)
 #' @export
 insertFigures <- function(db, experimentName, regulatorName, filename, name='', description='', priority=0) {
     tryCatch(experimentId <- db$experimentIds[[experimentName]],
@@ -148,15 +158,14 @@ insertFigures <- function(db, experimentName, regulatorName, filename, name='', 
 #' @param description Optional annotation: description
 #' @return An updated database object db
 #' @examples
-#' \dontrun{
-#'   db = initializeDb('path/to/database.sqlite', 'My Dataset')
-#'   suppdata = c(1, 2, 3)
-#'   names(suppdata) = c("A", "B", "C")
-#'   db = insertSupplementaryData(db, "supptest", suppdata)
-#'   boolsupp = c(TRUE, TRUE, FALSE)
-#'   names(boolsupp) = names(suppdata)
-#'   db = insertSupplementaryData(db, "supptest_bool", boolsupp)
-#' }
+#'   db <- initializeDb("", "My Dataset")
+#'   suppdata <- c(1, 2, 3)
+#'   names(suppdata) <- c("A", "B", "C")
+#'   db <- insertSupplementaryData(db, "supptest", suppdata)
+#'   boolsupp <- c(TRUE, TRUE, FALSE)
+#'   names(boolsupp) <- names(suppdata)
+#'   db <- insertSupplementaryData(db, "supptest_bool", boolsupp)
+#'   closeDb(db)
 #' @export
 insertSupplementaryData <- function(db, name, suppData, regulatorName=NA, source='', platform='', description='') {
     if (!is.na(regulatorName)) {
@@ -184,12 +193,11 @@ insertSupplementaryData <- function(db, name, suppData, regulatorName=NA, source
 #' @param zscores A vector of z-scores of elements identified by names
 #' @return An updated database object db
 #' @examples
-#' \dontrun{
-#'   db <- initializeDb('path/to/database.sqlite', 'My Dataset')
-#'   zscores = c(1, 2, 3)
-#'   names(zscores) = c("A", "B", "C")
-#'   db = insertZScores(db, zscores)
-#' }
+#'   db <- initializeDb("", "My Dataset")
+#'   zscores <- c(1, 2, 3)
+#'   names(zscores) <- c("A", "B", "C")
+#'   db <- insertZScores(db, zscores)
+#'   closeDb(db)
 #' @export
 insertZScores <- function(db, zscores) {
     .addZscores(db$db, db$datasetId, zscores)
@@ -201,11 +209,9 @@ insertZScores <- function(db, zscores) {
 #' @param db Database object created by \code{\link{initializeDb}}
 #' @param experimentSet Name of the experiment set for all the experiments (optional)
 #' @examples
-#' \dontrun{
-#'   db <- initializeDb('path/to/database.sqlite', 'My Dataset')
+#'   db <- initializeDb("", "My Dataset")
 #'   # ...
 #'   closeDb(db)
-#' }
 #' @export
 closeDb <- function(db, experimentSet='') {
     rootId <- .addAndGetExperimentSetId(db$db, 'All experiments', NA)

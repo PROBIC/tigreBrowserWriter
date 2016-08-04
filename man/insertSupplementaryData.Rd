@@ -29,14 +29,13 @@ An updated database object db
 Insert supplementary data
 }
 \examples{
-\dontrun{
-  db = initializeDb('path/to/database.sqlite', 'My Dataset')
-  suppdata = c(1, 2, 3)
-  names(suppdata) = c("A", "B", "C")
-  db = insertSupplementaryData(db, "supptest", suppdata)
-  boolsupp = c(TRUE, TRUE, FALSE)
-  names(boolsupp) = names(suppdata)
-  db = insertSupplementaryData(db, "supptest_bool", boolsupp)
-}
+  db <- initializeDb("", "My Dataset")
+  suppdata <- c(1, 2, 3)
+  names(suppdata) <- c("A", "B", "C")
+  db <- insertSupplementaryData(db, "supptest", suppdata)
+  boolsupp <- c(TRUE, TRUE, FALSE)
+  names(boolsupp) <- names(suppdata)
+  db <- insertSupplementaryData(db, "supptest_bool", boolsupp)
+  closeDb(db)
 }
 

@@ -25,11 +25,10 @@ An updated database object db
 Insert aliases
 }
 \examples{
-\dontrun{
-  db <- initializeDb('path/to/database.sqlite', 'My Dataset')
-  aliases = c("aliasA", "aliasB", "aliasC")
-  names(aliases) = c("A", "B", "C")
-  db = insertAliases(db, "testalias", aliases)
-}
+  db <- initializeDb("", "My Dataset")
+  aliases <- c("aliasA", "aliasB", "aliasC")
+  names(aliases) <- c("A", "B", "C")
+  db <- insertAliases(db, "testalias", aliases)
+  closeDb(db)
 }
 
