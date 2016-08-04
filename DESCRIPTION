@@ -2,10 +2,11 @@ Package: tigrebrowserWriter
 Version: 0.1.0
 Date: 2016-08-03
 Title: tigreBrowser Database Writer
-Author: Antti Honkela, Miika-Petteri Matikainen
-Maintainer: Antti Honkela <antti.honkela@helsinki.fi>
+Authors@R: c(person("Antti", "Honkela", role = c("aut", "cre"),
+                     email = "antti.honkela@helsinki.fi"),
+              person("Miika-Petteri", "Matikainen", role = "aut"))
 Depends:
-    R (>= 2.11.0)
+    R (>= 2.14.0)
 Imports:
     DBI,
     RSQLite
