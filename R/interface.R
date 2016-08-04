@@ -116,7 +116,9 @@ insertResults <- function(db, experimentName, regulatorName, figurePath, loglike
 #' @param db Database object created by \code{\link{initializeDb}}
 #' @param experimentName Experiment name
 #' @param regulatorName Regulator name (more detailed experiment identifier)
-#' @param filename URL path to figures
+#' @param filename URL path to figures. The path can contain the
+#'   special form \code{${probe_name}} which will be substituted
+#'   by the name of the entity (gene, ...) by the browser.
 #' @param name Optional figure name
 #' @param description Optional figure description
 #' @param priority Integer priority used for sorting figures (default: 0)
@@ -125,7 +127,7 @@ insertResults <- function(db, experimentName, regulatorName, figurePath, loglike
 #' \dontrun{
 #'   db = initializeDb('path/to/database.sqlite', 'My Dataset')
 #'   db = insertFigures(db, "testexperiment", "testregulator",
-#'                      "http://foo.invalid/path/${probe}_fit.png")
+#'                      "http://foo.invalid/path/${probe_name}_fit.png")
 #' }
 #' @export
 insertFigures <- function(db, experimentName, regulatorName, filename, name='', description='', priority=0) {

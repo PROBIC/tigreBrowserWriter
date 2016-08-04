@@ -14,7 +14,9 @@ insertFigures(db, experimentName, regulatorName, filename, name = "",
 
 \item{regulatorName}{Regulator name (more detailed experiment identifier)}
 
-\item{filename}{URL path to figures}
+\item{filename}{URL path to figures. The path can contain the
+special form \code{${probe_name}} which will be substituted
+by the name of the entity (gene, ...) by the browser.}
 
 \item{name}{Optional figure name}
 
@@ -32,7 +34,7 @@ Insert figures
 \dontrun{
   db = initializeDb('path/to/database.sqlite', 'My Dataset')
   db = insertFigures(db, "testexperiment", "testregulator",
-                     "http://foo.invalid/path/${probe}_fit.png")
+                     "http://foo.invalid/path/${probe_name}_fit.png")
 }
 }
 
