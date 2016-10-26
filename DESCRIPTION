@@ -14,7 +14,7 @@ Description: Write modelling results into a database for tigreBrowser,
     a web-based tool for browsing figures and summary data of
     independent model fits, such as Gaussian process models fitted for
     each gene or other genomic element. The browser is available at
-    https://github.com/PROBIC/tigreBrowser
+    https://github.com/PROBIC/tigreBrowser.
 License: AGPL-3
 URL: https://github.com/PROBIC/tigreBrowserWriter
 BugReports: https://github.com/PROBIC/tigreBrowserWriter/issues
