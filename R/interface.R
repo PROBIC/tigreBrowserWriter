@@ -1,4 +1,4 @@
-# tigrebrowserWriter user-facing API code
+# tigreBrowserWriter user-facing API code
 # Copyright (C) 2016 Antti Honkela
 #
 # Portions copied from tigre Bioconductor package
@@ -29,7 +29,7 @@
 #' @param datasetDescription Optional data set metadata: description
 #' @param datasetSaveLocation Optional data set metadata: save location
 #' @param datasetFigureFilename Optional data set metadata: figure file name
-#' @return A database object db needed by other tigrebrowserWriter functions
+#' @return A database object db needed by other tigreBrowserWriter functions
 #' @examples
 #' \dontrun{
 #'   # Create a real database to a file

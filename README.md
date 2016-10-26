@@ -1,10 +1,10 @@
-# tigrebrowserWriter
+# tigreBrowserWriter
 
-An R package for writing tigrebrowser databases.
+An R package for writing tigreBrowser databases.
 
-## tigrebrowser
+## tigreBrowser
 
-tigrebrowser is a web-based tool for browsing independent model fits,
+tigreBrowser is a web-based tool for browsing independent model fits,
 such as Gaussian process models fitted for each gene or other genomic
 element. The browser is available at https://github.com/PROBIC/tigreBrowser
 

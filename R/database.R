@@ -1,9 +1,9 @@
-# tigrebrowserWriter SQL database handling code
+# tigreBrowserWriter SQL database handling code
 # Original code from tigre Bioconductor package
 # Copyright (C) 2010 Miika-Petteri Matikainen, Antti Honkela and
 # Aalto University
 #
-# Modifications for tigrebrowserWriter
+# Modifications for tigreBrowserWriter
 # Copyright (C) 2016 Antti Honkela
 #
 # This program is free software: you can redistribute it and/or modify

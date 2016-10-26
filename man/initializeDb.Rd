@@ -26,7 +26,7 @@ initializeDb(dbPath, datasetName, datasetSpecies = "", datasetSource = "",
 \item{datasetFigureFilename}{Optional data set metadata: figure file name}
 }
 \value{
-A database object db needed by other tigrebrowserWriter functions
+A database object db needed by other tigreBrowserWriter functions
 }
 \description{
 Create and initialize a database
