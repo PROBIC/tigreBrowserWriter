@@ -3,6 +3,7 @@
 export(closeDb)
 export(initializeDb)
 export(insertAliases)
+export(insertFigureData)
 export(insertFigures)
 export(insertResults)
 export(insertSupplementaryData)
